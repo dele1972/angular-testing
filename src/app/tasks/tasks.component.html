@@ -1,0 +1,12 @@
+  <h2 style="text-align: center">Dummy Task List</h2>
+  <div class="wrapper">
+    <div class="list">
+      <ol *ngIf="taskList !== undefined">
+        <li *ngFor="let taskItem of taskList"><app-taskitem [item]='taskItem'></app-taskitem></li>
+      </ol>
+      
+    </div>
+  
+    <div class="json"><pre>{{ taskList | json }}</pre></div>
+  </div>
+  

@@ -1,0 +1,6 @@
+<div class="task" [ngClass]="{ 'done': item.done }">
+  <div class="item">{{ status }}</div>
+  <div class="item name">{{item.name}}</div>
+  <div class="item description">{{item.description}}</div>
+  <div class="item"><button (click)="toggleTask()">{{item.done}}</button></div>
+</div>

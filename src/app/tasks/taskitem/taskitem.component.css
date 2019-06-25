@@ -1,0 +1,28 @@
+.task {
+    display: block;
+    border: 1px solid silver;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: baseline;
+    font-family: Arial, Helvetica, sans-serif
+}
+.item {
+    padding: 5px;
+}
+
+.done {
+    background: green;
+}
+
+.name {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.description {
+    font-size: 0.75em;
+    font-style: italic;
+}
