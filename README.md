@@ -1,22 +1,65 @@
-# Allgemein
+[Quelle](https://entwickler.de/online/javascript/angular-testing-579793020.html)
+
+<a name="toc"></a>
+
+## Inhalt
+
+1. [Allgemein](#general)
+   1. [Unit-Tests](#unit-tests)
+   1. [Integrations- und Akzeptanztests](#acceptance-and-integrationstests)
+   1. [Angular-Applikationen unterscheidet zwischen zwei Kategorien von Tests](#angular-test-categories)
+   1. [(INSTALLATION)](#installation)
+   1. [Tests ausführen](#run-tests)
+1. [Unit-Tests](#section-unittests)
+   1. [Die wichtigsten Elemente von Jasmine](#common-jasmine-elements)
+   1. [Unit-Test einer Komponente](#unittest-component)
+      1. [Listing1: Test mit Jasmine](#listing1)
+      1. [Listing 2: Komponententest](#listing2)
+      1. [Listing 3: (Unit-)Test des Templates](#listing3)
+   1. [Unit-Test der Kommunikation zwischen den Komponenten](#unittest-component-communications)
+      1. [Listing 4: Inputtest](#listing4)
+      1. [Listing 5: Outputtest](#listing5)
+   1. [Unit-Test von Services](#unittest-services)
+      1. [Listing 6: Test eines synchronen Service](#listing6)
+      1. [Listing 7: Test eines asynchronen Service](#listing7)
+   1. [Unit-Test von Pipes](#unittests-pipes)
+      1. [Listing 8: Pipe testen](#listing8)
+   1. [Unit-Test von Direktiven](#unittests-directives)
+1. [E2E-Tests](#e2e-tests)
+   1. [Listing 9: E2E-Test](#listing9)
+   1. [Listing 10: Page-Object-Klasse](#listing10)
+1. [DIVERSES](#miscellaneous)
+
+
+<a name="general"></a>
+
+# Allgemein [↸](#toc)
 
 verschiedene Arten von Tests
 - unterschiedlich viele Tests pro Kategorie benötigen
 
-## Unit-Tests
+
+<a name="unit-tests"></a>
+
+## Unit-Tests [↸](#toc)
 - Basis der Testpyramide
 - zahlenmäßig die meisten Tests
 - werden während der Entwicklung sehr häufig ausgeführt
 - sollten (aus diesem Grund) sehr wenig Laufzeit benötigen
 - prüfen nur einzelne Codestücke, in den meisten Fällen handelt es sich dabei um Funktionen
 
-## Integrations- und Akzeptanztests
+<a name="acceptance-and-integrationstests"></a>
+
+## Integrations- und Akzeptanztests [↸](#toc)
 - nächsten beiden Ebenen
 - testen nicht mehr nur einzelne, unabhängige Codefragmente, sondern größere Einheiten bis hin zur grafischen Oberfläche
 - Anzahl ist wesentlich geringer als die der Unit-Tests
 - allerdings ist die Laufzeit auch wesentlich länger, da die Tests das gesamte System einbeziehen
 
-## Angular-Applikationen unterscheidet zwischen zwei Kategorien von Tests:
+
+<a name="angular-test-categories"></a>
+
+## Angular-Applikationen unterscheidet zwischen zwei Kategorien von Tests [↸](#toc)
 1. Unit-Tests
    - auf Basis von Jasmine und Karma (Testrunner,stellt die Infrastruktur zur Verfügung)
    - Bsp: 
@@ -25,11 +68,11 @@ verschiedene Arten von Tests
    - nicht alle Template Effekte müssen per E2E getestet werden
      - Eigenschaften und Methodenaufrufe der Komponente wirkt sich teilweise auch auf Template aus, Unit-Test per
      - gezielt nach bestimmten Elementen (anhand von CSS-Selektoren) im Template der Komponente suchen
-       - DebugElement -> Eigenschaft nativeElement --> **querySelector-Methode**
+       - DebugElement -> Eigenschaft nativeElement --> ```querySelector-Methode```
        - wohl am häufigsten eingesetzten Methode
      - Elemente anhand bestimmter Direktiven lokalisieren
      - alle Elemente auswählen
-       - **querySelectorAll-Methode**
+       - ```querySelectorAll-Methode```
        - Ergebnis erlaubt Zugriff auf das HTML-Element (Textinhalt z. B. über die Eigenschaft textContent)
 2. End-to-End-Tests (E2E-Tests)
    - auf Basis von Protractor
@@ -45,10 +88,16 @@ verschiedene Arten von Tests
   => für Refactorings ein unverzichtbares Hilfsmittel
 
 
-## (INSTALLATION)
+
+<a name="installation"></a>
+
+## (INSTALLATION) [↸](#toc)
 - mit der regulären Angularinstalltion mit installiert: ```npm install -g @angular/cli```
 
-## Tests ausführen
+
+<a name="run-tests"></a>
+
+## Tests ausführen [↸](#toc)
 - Unit-Tests: npm test (package.json)
   - Karma als auch der TypeScript-Compiler werden in einen watch-Modus versetzt
   - Quellcode wird bei jedem Speichern nach einer Änderung neu kompiliert und alle Unit-Tests automatisch ausgeführt
@@ -56,9 +105,15 @@ verschiedene Arten von Tests
 - E2E-Tests: npm run e2e
 
 
-# Unit-Tests
 
-## Die wichtigsten Elemente von Jasmine
+<a name="section-unittests"></a>
+
+# Unit-Tests [↸](#toc)
+
+
+<a name="common-jasmine-elements"></a>
+
+## Die wichtigsten Elemente von Jasmine [↸](#toc)
 | Methode | Beschreibung |
 |-----|-------------|
 beforeAll(), afterAll()	|	Set-up- und Tear-down-Routinen vor bzw. nach allen Tests
@@ -67,7 +122,10 @@ describe()	|	Testsuite zur Gruppierung von Tests
 it()	|	Einzelner Testfall
 expect().toEqual()	|	Assertion, Prüfung innerhalb eines Tests
 
-## Unit-Test einer Komponente
+
+<a name="unittest-component"></a>
+
+## Unit-Test einer Komponente [↸](#toc)
 - Vorgehensweise nicht so trivial wie bei  bei einfachen Klassen und Funktionen
   * da Aufbau komplexer:
     - Komponentenklasse
@@ -81,11 +139,11 @@ expect().toEqual()	|	Assertion, Prüfung innerhalb eines Tests
   *-> richtige Stelle: beforeEach-Methode von Jasmine
 - Das Setup wird in zwei Schritte unterteilt
   * die Erstellung (Konfiguration) eines Testmoduls
-    - Erzeugung des Testmoduls erfolgt mit einem Aufruf der **configureTestingModule-Methode**
+    - Erzeugung des Testmoduls erfolgt mit einem Aufruf der ```configureTestingModule-Methode```
     - Dieses Modul stellt die Umgebung dar, in der die zu testende Komponente eingebunden wird (wie NgModule)
     ! Falls Sie auf die Integration Ihrer Komponente in das Testmodul verzichten, erhalten Sie bei der Ausführung Ihrer Tests die folgende Fehlermeldung:
       - „Error: Cannot create the component TaskComponent as it was not imported into the testing module!“
-    - Bei Verwendung von externen Templates und Stylesheets muss im Testmodul noch die **compileComponents-Methode** aufgerufen werden
+    - Bei Verwendung von externen Templates und Stylesheets muss im Testmodul noch die ```compileComponents-Methode``` aufgerufen werden
       * hier manueller Aufruf notwendig im regulären Applikationsbetrieb automatisch
       * dadurch Kontrolle über Reihenfolge und Zeit => jede einzelne Phase des Lebenszyklus testbar
   * die Instanziierung der Komponente
@@ -96,10 +154,13 @@ expect().toEqual()	|	Assertion, Prüfung innerhalb eines Tests
       - per debugElement auch Einblick auf Template der Komponente
   - Grund: das Kompilieren von Komponenten ist ein asynchroner Prozess undmuss deshalb im async-Helper von Angular gekapselt werden
 - im Test muss alles manuell durchgeführt werden
-  - so auch die Change Detection mittels **detectChanges** (dadurch erfolgt auch das Data Binding zw. Komponentenklasse und Template)
+  - so auch die Change Detection mittels ```detectChanges``` (dadurch erfolgt auch das Data Binding zw. Komponentenklasse und Template)
     - wenn zu Testzwecken der Wert einer Eigenschaft in der Komponente geändert wurde, muss anschließend die Change Detection angestoßen werden, damit anschließende die Änderung auch im Template wirksam ist
 
-### Listing1: Test mit Jasmine
+
+<a name="listing1"></a>
+
+### Listing1: Test mit Jasmine [↸](#toc)
 ```TypeScript
 describe('Calculator', () => {
   let calc: Calculator;
@@ -115,7 +176,10 @@ describe('Calculator', () => {
 });
 ```
 
-### Listing 2: Komponententest
+
+<a name="listing2"></a>
+
+### Listing 2: Komponententest [↸](#toc)
 ```TypeScript
 describe('TaskComponent', () => {
   let component: TaskComponent;
@@ -146,7 +210,10 @@ describe('TaskComponent', () => {
 });
 ```
 
-### Listing 3: (Unit-)Test des Templates
+
+<a name="listing3"></a>
+
+### Listing 3: (Unit-)Test des Templates [↸](#toc)
 ```TypeScript
 it('should contain the correct title', () => {
   component.title = 'Test';
@@ -157,7 +224,10 @@ it('should contain the correct title', () => {
 ```
 
 
-## Unit-Test der Kommunikation zwischen den Komponenten
+
+<a name="unittest-component-communications"></a>
+
+## Unit-Test der Kommunikation zwischen den Komponenten [↸](#toc)
 * Komponentenansatz von Angular
   - Applikationen als Bäume von Komponenten aufgebaut
   - Datenfluss erfolgt häufig über Inputs (Property Binding an Child) und Outputs (Event Emitter an Parent)
@@ -171,11 +241,14 @@ it('should contain the correct title', () => {
         - Zuweisung sollte bereits vor dem ersten Aufruf der detectChanges-Methode erfolgen => sonst Fehlermeldungen möglich
           - detectChanges-Methodenaufruf in den Test verlagern, oder
           - Input schon in der beforeEach-Methode zuweisen
-        * Der Code im **beforeEach** ist allgemeingültig für alle folgenden Tests
+        * Der Code im ```beforeEach``` ist allgemeingültig für alle folgenden Tests
       - Output
         - meistens an eine bestimmte Benutzerinteraktion gekoppelt (oder anderes async Ergebnis)
 
-### Listing 4: Inputtest
+
+<a name="listing4"></a>
+
+### Listing 4: Inputtest [↸](#toc)
 ```TypeScript
 beforeEach(() => {
   fixture = TestBed.createComponent(TaskItemComponent);
@@ -192,7 +265,10 @@ it('should correctly handle input', () => {
 });
 ```
 
-### Listing 5: Outputtest
+
+<a name="listing5"></a>
+
+### Listing 5: Outputtest [↸](#toc)
 ```TypeScript
 it('should correctly handle output', () => {
   let taskStatus = false;
@@ -204,7 +280,10 @@ it('should correctly handle output', () => {
 });
 ```
 
-## Unit-Test von Services
+
+<a name="unittest-services"></a>
+
+## Unit-Test von Services [↸](#toc)
 - bzw.:  Komponenten mit Abhängigkeiten testen
 - synchroner Service (der z. B. lediglich Daten als Array zur Verfügung stellt):
   - wird nicht direkt in Verbindung mit der Komponente getestet
@@ -218,7 +297,7 @@ it('should correctly handle output', () => {
     3. auf die Promise des Service warten - zwei Möglichkeiten:
        a) async-Funktion
           - es wird eine asynchrone Testzone erzeugt
-          - **whenStable-Methode** der Test-Fixture gibt ein Promise-Objekt zurück
+          - ```whenStable-Methode``` der Test-Fixture gibt ein Promise-Objekt zurück
           - Promise-Object wird  aufgelöst sobald alle Promises in der Zone aufgelöst sind
           - Aufruf der detectChanges-Methode stellt sicher, dass alle Änderungen auch auf das Template angewendet werden
           - Danach kann die Assertion durchgeführt werden
@@ -226,7 +305,7 @@ it('should correctly handle output', () => {
        b) fakeAsync-Funktion
           - arbeitet sehr ähnlich wie async-Funktion
           - Code ist linearer und einfacher gestaltet
-          - **tick-Methode** aufrufen
+          - ```tick-Methode``` aufrufen
           - sorgt dann (ähnlich wie die whenStable-Methode) dafür, dass der folgende Code erst ausgeführt wird, wenn alle Promises der Zone aufgelöst sind
           - Anschließend muss die Change Detection aktiviert werden
           - anschließend die Assertion formulieren
@@ -240,7 +319,50 @@ it('should correctly handle output', () => {
 
 
 
-### Listing 7: Test eines asynchronen Service
+<a name="listing6"></a>
+
+### Listing 6: Test eines synchronen Service [↸](#toc)
+```TypeScript
+describe('TaskListComponent', () => {
+  let component: TaskListComponent;
+  let fixture: ComponentFixture<TaskListComponent>;
+ 
+  beforeEach(async(() => {
+    const taskServiceStub = {
+      get() {
+        return [
+          new Task('Test1', false),
+          new Task('Test2', true)
+        ];
+      }
+    };
+ 
+    TestBed.configureTestingModule({
+      declarations: [ TaskListComponent, TaskItemComponent ],
+      providers: [
+        {provide: TaskService, useValue: taskServiceStub}
+      ]
+    })
+    .compileComponents();
+  }));
+ 
+  beforeEach(() => {
+    fixture = TestBed.createComponent(TaskListComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+ 
+  it('should have two children', () => {
+    const element = fixture.debugElement.nativeElement.querySelectorAll('li');
+    expect(debugElement.length).toEqual(2);
+  });
+});
+```
+
+
+<a name="listing7"></a>
+
+### Listing 7: Test eines asynchronen Service [↸](#toc)
 ```TypeScript
 describe('TaskListComponent', () => {
   let component: TaskListComponent;
@@ -284,13 +406,19 @@ describe('TaskListComponent', () => {
 });
 ```
 
-## Unit-Test von Pipes
+
+<a name="unittests-pipes"></a>
+
+## Unit-Test von Pipes [↸](#toc)
 - können (wie Services) wie ganz normale JavaScript-Objekte getestet werden:
   - Funktionsaufruf mit einem Wert -> Assertion erwartet einen bestimmten Rückgabewert
 - Objekterzeugung entweder direkt im Test oder (zur Vermeidung von Duplikaten) in einer beforeEach-Routine
 
 
-### Listing 8: Pipe testen
+
+<a name="listing8"></a>
+
+### Listing 8: Pipe testen [↸](#toc)
 ```TypeScript
 describe('UppercasePipe', () => {
   let pipe: UppercasePipe;
@@ -305,18 +433,24 @@ describe('UppercasePipe', () => {
 });
 ```
 
-## Unit-Test von Direktiven
+
+<a name="unittests-directives"></a>
+
+## Unit-Test von Direktiven [↸](#toc)
 - ähneln gewöhnlichen Komponententests
 - für den Test der Direktive muss eine Testkomponente verwendet werden um die Auswirkungen der Direktive zu prüfen
   (ähnlich den Input- und Outputtests)
 1. einfache Testkomponente erstellen
 2. Direktive im Template anwenden
 3. Auswirkungen in Tests prüfen
-- Eine Erleichterung für Direktiventests bietet die **By.directive-Methode**
+- Eine Erleichterung für Direktiventests bietet die ```By.directive-Methode```
   - darüber können Elemente lokalisiert werden, auf die eine bestimmte Direktive angewendet wurde.
 
 
-# E2E-Tests
+
+<a name="e2e-tests"></a>
+
+# E2E-Tests [↸](#toc)
 
 - Test von ganzen Workflows in der Applikation
 - die Strukturierung der Testdateien unterscheidet sich von den Unit-Tests:
@@ -337,11 +471,11 @@ describe('UppercasePipe', () => {
   => Page Objects (PO) dafür etabliert
      - einfache Klassen, welche die häufigsten Kommandos zum Testen einer Seite beinhalten (navigieren oder finden bestimmter Elemente)
      - PO Klassen werden in den Tests inkludiert (instanziiert im Set-up, Methodenaufruf im Test)
-- wichtigstes Element von Protractor ist das **browser-Objekt**
+- wichtigstes Element von Protractor ist das ```browser-Objekt```
   - dient zur Steuerung des registrierten Browsers
   - z. B. mit der get-Methode zu einer bestimmten URL navigieren
-- das **element-Objekt** entspricht der Unit-Test query-Methode des debugElements
-  - in Kombination mit dem **by-Objekt** können die Elemente der Applikation lokalisiert werden
+- das ```element-Objekt``` entspricht der Unit-Test query-Methode des debugElements
+  - in Kombination mit dem ```by-Objekt``` können die Elemente der Applikation lokalisiert werden
   - mit der Referenz auf ein Element kann beispielsweise mit den click– oder sendKeys-Methoden eine Benutzerinteraktion simuliert werden
   - Vorteil von Protractor: das Framework wartet automatisch auf die Elemente mit denen interagiert wird
     - d.h. keine explizite Angabe notwendig, wann und wie lange auf welche Elemente gewartet werden soll
@@ -350,7 +484,10 @@ describe('UppercasePipe', () => {
   - Tests arbeiten auf einer Instanz der Applikation (reicht vom Angular-Frontend bis zum Backend auf dem Server)
   - Laufzeit der E2E-Tests daher auch wesentlich länger als die von Unit-Tests
 
-## Listing 9: E2E-Test
+
+<a name="listing9"></a>
+
+## Listing 9: E2E-Test [↸](#toc)
 ```TypeScript
 describe('List Page', function() {
   let page: ListPage;
@@ -366,7 +503,10 @@ describe('List Page', function() {
 });
 ```
 
-## Listing 10: Page-Object-Klasse
+
+<a name="listing10"></a>
+
+## Listing 10: Page-Object-Klasse [↸](#toc)
 ```TypeScript
 export class ListPage {
   navigateTo() {
@@ -379,7 +519,10 @@ export class ListPage {
 }
 ```
 
-# DIVERSES
+
+<a name="miscellaneous"></a>
+
+# DIVERSES [↸](#toc)
 
 ## Aufgefallen
 
@@ -393,6 +536,7 @@ export class ListPage {
     * **Lösung**: den Test mit ```xdescribe``` deaktivieren
     * Lösung (nicht empfohlen): ```NO_ERRORS_SCHEMA``` von ```@angular/core``` importieren und nach den ```descriptions``` diesen Key/Value anfügen:  
     ```schemas: [ NO_ERRORS_SCHEMA ],```
+* **Isolated** vs **Shallow** vs **Integrated** - verschiedene Testansätze, die auch die o.g. Komponentenverschachtelung berücksichtigen ([Angular component testing with examples](https://medium.com/@bencabanes/angular-component-testing-with-examples-7c52b2b7035e))
 
 ## Links
 
