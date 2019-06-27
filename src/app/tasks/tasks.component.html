@@ -10,3 +10,18 @@
     <div class="json"><pre>{{ taskList | json }}</pre></div>
   </div>
   
+  <div style="text-align:center">
+    <h2>What's about this unadvanced Table?</h2>
+    <table *ngIf="tableData !== undefined">
+      <tr>
+        <th>No</th>
+        <th>col1</th>
+        <th>col2</th>
+      </tr>
+      <tr *ngFor="let row of tableData; index as i">
+        <td>{{ i }}</td>
+        <td>{{ row.col1 }}</td>
+        <td>{{ row.col2 }}</td>
+      </tr>
+    </table>
+  </div>

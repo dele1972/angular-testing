@@ -7,9 +7,16 @@
 }
 
 .list {
-
+    background: #def3cd;
 }
 
 .json {
+    background: #f5e499;
+}
 
+table {
+    background: #99d8f5;
+    border: 1px solid silver;
+    width: 50%;
+    margin: auto;
 }

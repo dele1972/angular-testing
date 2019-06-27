@@ -16,7 +16,7 @@ xdescribe('AppComponent', () => {
 
       Lösung 1: Komponente(n) einbinden
       Lösung 2: Komponente(n) mocken
-      Lösung 3: Test deaktivieren ('xdescribe')
+      Lösung 3: Testgruppe/Tests deaktivieren ('xdescribe'/'xit')
       Lösung 4: mit NO_ERRORS_SCHEMA alle Template Fehler unterdrücken
       */
       

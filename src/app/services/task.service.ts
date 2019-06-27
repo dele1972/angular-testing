@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Task } from './task.model';
 
+export interface TASKITEM {
+  col1: string;
+  col2: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })

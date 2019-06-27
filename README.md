@@ -1,4 +1,5 @@
-[Quelle](https://entwickler.de/online/javascript/angular-testing-579793020.html)
+# Angular-Testing
+Quelle: [Angular-Testing: Unit-Tests und E2E-Tests mit Angular](https://entwickler.de/online/javascript/angular-testing-579793020.html)
 
 <a name="toc"></a>
 
@@ -59,33 +60,33 @@ verschiedene Arten von Tests
 
 <a name="angular-test-categories"></a>
 
-## Angular-Applikationen unterscheidet zwischen zwei Kategorien von Tests [↸](#toc)
-1. Unit-Tests
+## Angular-Applikationen unterscheiden zwischen zwei Kategorien von Tests [↸](#toc)
+1. **Unit-Tests**
    - auf Basis von Jasmine und Karma (Testrunner,stellt die Infrastruktur zur Verfügung)
    - Bsp: 
      - Liefert das Observable bei einer bestimmten Wertekonstellation eines injizierten Service die korrekten Werte?
      - wird bei einer Fehleingabe die korrekte Exception ausgelöst?
    - nicht alle Template Effekte müssen per E2E getestet werden
      - Eigenschaften und Methodenaufrufe der Komponente wirkt sich teilweise auch auf Template aus, Unit-Test per
-     - gezielt nach bestimmten Elementen (anhand von CSS-Selektoren) im Template der Komponente suchen
-       - DebugElement -> Eigenschaft nativeElement --> ```querySelector-Methode```
+     - gezielt nach bestimmten Elementen (anhand von [CSS-Selektoren](https://developer.mozilla.org/de/docs/Web/CSS/CSS_Selectors)) im Template der Komponente suchen
+       - DebugElement → Eigenschaft nativeElement → [querySelector()](https://developer.mozilla.org/de/docs/Web/API/Document/querySelector)
        - wohl am häufigsten eingesetzten Methode
      - Elemente anhand bestimmter Direktiven lokalisieren
      - alle Elemente auswählen
-       - ```querySelectorAll-Methode```
+       - [querySelectorAll()](https://developer.mozilla.org/de/docs/Web/API/Document/querySelectorAll)
        - Ergebnis erlaubt Zugriff auf das HTML-Element (Textinhalt z. B. über die Eigenschaft textContent)
-2. End-to-End-Tests (E2E-Tests)
+2. **End-to-End-Tests (E2E-Tests)**
    - auf Basis von Protractor
    - Benutzerinteraktionen und Workflows
    - Bsp:
-   - Eine Tastatureingabe,
-    - ein Klick auf einen Button und dann 
-   - warten, dass die Applikation mit der korrekten Ausgabe reagiert
+     - Eine Tastatureingabe,
+     - ein Klick auf einen Button und dann 
+     - warten, dass die Applikation mit der korrekten Ausgabe reagiert
 * allgemein: auch testgetriebene Entwicklung mit Angular komfortabel möglich
   1. Bestandteile der Applikation wie Komponenten, Pipes oder Services in einem Test beschreiben
   2. gegen diesen Test implementieren
-  => bei dieser Vorgehensweise sehr schnelle Rückmeldung, falls Teile der Applikation durch eine Änderung nicht mehr funktionieren
-  => für Refactorings ein unverzichtbares Hilfsmittel
+  ⇒ bei dieser Vorgehensweise sehr schnelle Rückmeldung, falls Teile der Applikation durch eine Änderung nicht mehr funktionieren
+  ⇒ für Refactorings ein unverzichtbares Hilfsmittel
 
 
 
@@ -98,11 +99,11 @@ verschiedene Arten von Tests
 <a name="run-tests"></a>
 
 ## Tests ausführen [↸](#toc)
-- Unit-Tests: npm test (package.json)
-  - Karma als auch der TypeScript-Compiler werden in einen watch-Modus versetzt
+- Unit-Tests: ```npm test``` (```package.json```)
+  - Karma als auch der TypeScript-Compiler werden in einen _watch-Modus_ versetzt
   - Quellcode wird bei jedem Speichern nach einer Änderung neu kompiliert und alle Unit-Tests automatisch ausgeführt
-  --> kontinuieliche Rückmeldung
-- E2E-Tests: npm run e2e
+  → kontinuieliche Rückmeldung
+- E2E-Tests: ```npm run e2e```
 
 
 
@@ -132,27 +133,30 @@ expect().toEqual()	|	Assertion, Prüfung innerhalb eines Tests
     - Decorator (der zusätzliche Metainformationen hinzufügt)
     - HTML-Template (sorgt für die Darstellung)
     - optionales Stylesheet
-  * Hilfsmittel im Modul @angular/core/testing
+  * **Hilfsmittel** im Modul [@angular.io/core/testing](https://angular.io/api/core/testing)
 - Umgebung für den Test vorbereiten
   * diese Schritte werden vor jedem Test durchgeführt
   * stellt sicher, dass der Test in einer sauberen Umgebung ausgeführt wird
-  *-> richtige Stelle: beforeEach-Methode von Jasmine
+  * → richtige Stelle: ```beforeEach-Methode``` von Jasmine
 - Das Setup wird in zwei Schritte unterteilt
   * die Erstellung (Konfiguration) eines Testmoduls
     - Erzeugung des Testmoduls erfolgt mit einem Aufruf der ```configureTestingModule-Methode```
     - Dieses Modul stellt die Umgebung dar, in der die zu testende Komponente eingebunden wird (wie NgModule)
-    ! Falls Sie auf die Integration Ihrer Komponente in das Testmodul verzichten, erhalten Sie bei der Ausführung Ihrer Tests die folgende Fehlermeldung:
+    * ! Wenn die Komponente in dem Testmodul nicht in ```declarations``` eingebunden wird, erhält man bei der Ausführung der Tests die folgende Fehlermeldung:
       - „Error: Cannot create the component TaskComponent as it was not imported into the testing module!“
-    - Bei Verwendung von externen Templates und Stylesheets muss im Testmodul noch die ```compileComponents-Methode``` aufgerufen werden
+    - **Bei Verwendung von externen Templates und Stylesheets** muss im Testmodul noch die ```compileComponents-Methode``` aufgerufen werden
       * hier manueller Aufruf notwendig im regulären Applikationsbetrieb automatisch
-      * dadurch Kontrolle über Reihenfolge und Zeit => jede einzelne Phase des Lebenszyklus testbar
+      * dadurch Kontrolle über Reihenfolge und Zeit ⇒ jede einzelne Phase des Lebenszyklus testbar
+    - **Bei Abhängigkeiten von Komponenten** (z. B. Services oder Parents/Childs) müssen diese entweder gemockt oder auch in den ```declarations``` aufgeführt werden. Ansonsten erhält man folgende Fehlermeldungen: 
+      * „Failed: Template parse errors: 'app-tasks' is not a known element:“
+      * „Failed: Template parse errors: Can't bind to 'item' since it isn't a known property of 'app-taskitem'.“
   * die Instanziierung der Komponente
-    - mittels: createComponent-Methode
+    - mittels: ```createComponent-Methode```
     - Übergabe der Klasse der zu instanziierenden Komponente
-    - Rückgabe: ComponentFixture
-      - Objekt enthält debugElement; per componentInstance-Eigenschaft Zugriff auf Instanz der Komponente
-      - per debugElement auch Einblick auf Template der Komponente
-  - Grund: das Kompilieren von Komponenten ist ein asynchroner Prozess undmuss deshalb im async-Helper von Angular gekapselt werden
+    - Rückgabe: ```ComponentFixture```
+      - Objekt enthält das ```debugElement```; per ```componentInstance-Eigenschaft``` Zugriff auf Instanz der Komponente
+      - per ```debugElement``` auch Einblick auf Template der Komponente
+  - Grund: das Kompilieren von Komponenten ist ein asynchroner Prozess und muss deshalb im async-Helper von Angular gekapselt werden
 - im Test muss alles manuell durchgeführt werden
   - so auch die Change Detection mittels ```detectChanges``` (dadurch erfolgt auch das Data Binding zw. Komponentenklasse und Template)
     - wenn zu Testzwecken der Wert einer Eigenschaft in der Komponente geändert wurde, muss anschließend die Change Detection angestoßen werden, damit anschließende die Änderung auch im Template wirksam ist
@@ -238,7 +242,7 @@ it('should contain the correct title', () => {
   - für sich alleine
     - Input und Output simulieren
       - Input z. B. als Wertzuweisung an die Eigenschaft der Komponente
-        - Zuweisung sollte bereits vor dem ersten Aufruf der detectChanges-Methode erfolgen => sonst Fehlermeldungen möglich
+        - Zuweisung sollte bereits vor dem ersten Aufruf der detectChanges-Methode erfolgen ⇒ sonst Fehlermeldungen möglich
           - detectChanges-Methodenaufruf in den Test verlagern, oder
           - Input schon in der beforeEach-Methode zuweisen
         * Der Code im ```beforeEach``` ist allgemeingültig für alle folgenden Tests
@@ -294,15 +298,15 @@ it('should correctly handle output', () => {
     1. über den Injector eine Referenz auf den Service-Stub holen und einen Jasmine-Stub über die get-Methode des Service anlegen
     2. Stub gibt eine Promise zurück, die sofort mit einem Array mit zwei Taskobjekten aufgelöst wird
        - Trotz der sofortigen Auflösung handelt es sich hierbei um eine asynchrone Operation
-    3. auf die Promise des Service warten - zwei Möglichkeiten:
-       a) async-Funktion
+    3. **auf die Promise des Service warten** - zwei Möglichkeiten:  
+       a) **async-Funktion**
           - es wird eine asynchrone Testzone erzeugt
           - ```whenStable-Methode``` der Test-Fixture gibt ein Promise-Objekt zurück
           - Promise-Object wird  aufgelöst sobald alle Promises in der Zone aufgelöst sind
           - Aufruf der detectChanges-Methode stellt sicher, dass alle Änderungen auch auf das Template angewendet werden
           - Danach kann die Assertion durchgeführt werden
 
-       b) fakeAsync-Funktion
+       b) **fakeAsync-Funktion**
           - arbeitet sehr ähnlich wie async-Funktion
           - Code ist linearer und einfacher gestaltet
           - ```tick-Methode``` aufrufen
@@ -411,7 +415,7 @@ describe('TaskListComponent', () => {
 
 ## Unit-Test von Pipes [↸](#toc)
 - können (wie Services) wie ganz normale JavaScript-Objekte getestet werden:
-  - Funktionsaufruf mit einem Wert -> Assertion erwartet einen bestimmten Rückgabewert
+  - Funktionsaufruf mit einem Wert → Assertion erwartet einen bestimmten Rückgabewert
 - Objekterzeugung entweder direkt im Test oder (zur Vermeidung von Duplikaten) in einer beforeEach-Routine
 
 
@@ -443,8 +447,8 @@ describe('UppercasePipe', () => {
 1. einfache Testkomponente erstellen
 2. Direktive im Template anwenden
 3. Auswirkungen in Tests prüfen
-- Eine Erleichterung für Direktiventests bietet die ```By.directive-Methode```
-  - darüber können Elemente lokalisiert werden, auf die eine bestimmte Direktive angewendet wurde.
+- Eine Erleichterung für Direktiventests bietet die [```By.directive-Methode```](https://angular.io/api/platform-browser/By) des [@angular/platform-browser](https://angular.io/api/platform-browser) packages
+  - darüber können u.a. Elemente im ```DebugElement``` lokalisiert werden, auf die eine bestimmte Direktive angewendet wurde.
 
 
 
@@ -467,8 +471,8 @@ describe('UppercasePipe', () => {
   2. den Ausgangszustand prüfen
   3. mit der Seite interagieren
   4. die Auswirkungen der Interaktion ebenfalls testen
-  -> Die hierfür erforderlichen Kommandos sollten nicht direkt in den Tests geschrieben werden (unübersichtlich und Kommandos werden häufiger benutzt)
-  => Page Objects (PO) dafür etabliert
+  → Die hierfür erforderlichen Kommandos sollten nicht direkt in den Tests geschrieben werden (unübersichtlich und Kommandos werden häufiger benutzt)
+  ⇒ Page Objects (PO) dafür etabliert
      - einfache Klassen, welche die häufigsten Kommandos zum Testen einer Seite beinhalten (navigieren oder finden bestimmter Elemente)
      - PO Klassen werden in den Tests inkludiert (instanziiert im Set-up, Methodenaufruf im Test)
 - wichtigstes Element von Protractor ist das ```browser-Objekt```
@@ -538,7 +542,44 @@ export class ListPage {
     ```schemas: [ NO_ERRORS_SCHEMA ],```
 * **Isolated** vs **Shallow** vs **Integrated** - verschiedene Testansätze, die auch die o.g. Komponentenverschachtelung berücksichtigen ([Angular component testing with examples](https://medium.com/@bencabanes/angular-component-testing-with-examples-7c52b2b7035e))
 
+## "No binary for Chrome browser on your platform. Please, set "CHROME_BIN" env variable."
+
+### Ubuntu/Linux
+
+Pfad zu den Chromium Binaries herausfinden:
+```which chromium```
+
+#### Umgebungsvariable temporär setzen
+```export CHROME_BIN=/snap/bin/chromium```
+
+#### Umgebungsvariable permanent setzen
+1. ```vi ~/.profile```
+2. an's Ende einfügen: ```export CHROME_BIN=/snap/bin/chromium```
+	* [vi commands](https://www.cs.colostate.edu/helpdocs/vi.html)
+		* ```x``` - delete
+		* ```G``` - Cursor in letzte Zeile
+		* ```o``` - Neue Zeile nach Cursor einfügen
+
+## foo
+
+### was für Unit-Tests zur Verfügung steht
+| Name | Beschreibung |
+|---|---|
+Jasmine | freie Modultest-Bibliothek für JavaScript
+Angular core/testing API | stellt Objekte/Methoden zur Verfügung mit denen Angular Elemente genutzt/ausgelesen werden können
+|   | **```TestBed```**```.createComponent``` erstellt eine Komponente und liefert ein ```ComponentFixture``` Objekt
+| | ```ComponentFixture``` → nativeElement vs  debugElement.nativeElement
+| | nativeElement value will always be an HTMLElement
+| | daher [querySelector()](https://developer.mozilla.org/de/docs/Web/API/Document/querySelector) und [querySelectorAll()](https://developer.mozilla.org/de/docs/Web/API/Document/querySelectorAll) möglich
+Karma | HTML testrunner (startet einen HTTP Server)
+
+
 ## Links
 
+* [@angular.io/core/testing](https://angular.io/api/core/testing)
+* [An Angular Testing Cheatsheet](https://dev.to/lysofdev/an-angular-testing-cheatsheet-5hj2)
 * [Why you shouldn’t use NO_ERRORS_SCHEMA in Angular Unit Tests](https://medium.com/@fivedicephoto/why-you-shouldnt-use-no-errors-schema-in-angular-unit-tests-cdd478c30782)
 * [Angular 2 Karma Test 'component-name' is not a known element](https://stackoverflow.com/a/44508549)
+* [Simplified Angular unit testing](https://logrocket.com/blog/angular-unit-testing/)
+* [Introduction to Unit Testing Angular 2 Components](https://www.sparkbit.pl/unit-testing-angular-2-components-part-1/)
+* [Mocking Child Components - Angular 2](https://stackoverflow.com/questions/41240163/mocking-child-components-angular-2)
