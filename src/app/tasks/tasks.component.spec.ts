@@ -47,9 +47,9 @@ describe('TasksComponent', () => {
 
   it('should display a Task List with async Service data', async(() => {
     const serviceStub = debugElement.injector.get(TaskService);
-    
+
     spyOn(serviceStub, 'getPromiseTaskList').and.returnValue(Promise.resolve());
-    
+
     fixture.detectChanges();
 
     fixture.whenStable().then(() => {
@@ -58,19 +58,19 @@ describe('TasksComponent', () => {
       expect(elements.length).toEqual(1);
     });
   }));
-  
+
   it('should have as h2 \'Dummy Task List\'', () => {
     fixture.detectChanges();
     const nativeElement = debugElement.nativeElement;
     expect(nativeElement.querySelector('h2').textContent).toContain('Dummy Task List');
   });
-  
+
   it('should have a table!!!', () => {
     fixture.detectChanges();
     const elements = debugElement.nativeElement.querySelectorAll('table');
     expect(elements.length).toEqual(1);
   });
-  
+
   it('Should fail - Table should\'nt be visible because of wrong Parameters', () => {
     component.tableData = undefined;
     component.setTableData(123, 321);
@@ -78,7 +78,7 @@ describe('TasksComponent', () => {
     const elements = debugElement.nativeElement.querySelectorAll('table');
     expect(elements.length).toEqual(1);
   });
-  
+
   it('Should display table, valid Parameters given', () => {
     component.tableData = undefined;
     component.setTableData(['Unittest', 'yeah'], ['123', '321']);
@@ -86,5 +86,5 @@ describe('TasksComponent', () => {
     const elements = debugElement.nativeElement.querySelectorAll('table');
     expect(elements.length).toEqual(1);
   });
-  
+
 });

@@ -99,7 +99,7 @@ verschiedene Arten von Tests
 <a name="run-tests"></a>
 
 ## Tests ausführen [↸](#toc)
-- Unit-Tests: ```npm test``` (```package.json```)
+- Unit-Tests: ```npm run test``` (```package.json```)
   - Karma als auch der TypeScript-Compiler werden in einen _watch-Modus_ versetzt
   - Quellcode wird bei jedem Speichern nach einer Änderung neu kompiliert und alle Unit-Tests automatisch ausgeführt
   → kontinuieliche Rückmeldung

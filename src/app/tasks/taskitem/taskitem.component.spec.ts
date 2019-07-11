@@ -22,15 +22,15 @@ describe('TaskitemComponent', () => {
     Failed: Template parse errors:
     Can't bind to 'item' since it isn't a known property of 'app-taskitem'.
      */
-    
+
     TestBed.configureTestingModule({
       declarations: [ TaskitemComponent, TasksComponent ]
     })
       .compileComponents();
-    
+
     fixture = TestBed.createComponent(TaskitemComponent);
     component = fixture.componentInstance;
-    
+
     // set item property to a dummy task
     const item = new Task('Mocked Taskname', 'Description1', false);
     component.item = item;
