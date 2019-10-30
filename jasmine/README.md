@@ -1,5 +1,7 @@
 # Jasmine
 
+from [angular-unittest/jasmine/README.md](https://gitlab.hornetsecurity.com/pdc/frontend-research/angular-unittest/blob/master/jasmine/README.md)
+
 <a name="toc"></a>
 
 ## Table of content
@@ -82,23 +84,20 @@
 
 ### HSE Angular Testing
 
-* [frontend-research/angular-testing](https://gitlab.hornetsecurity.com/pdc/frontend-research/angular-testing/blob/master/README.md#e2e-tests)
-* [test/unittest_e2e](https://gitlab.hornetsecurity.com/pdc/ngCp/commits/test/unittest_e2e)
-* [angular-adv-table/tree/feature/e2e](https://gitlab.hornetsecurity.com/pdc/hse-component/angular-adv-table/tree/feature/e2e)
+* [frontend-research/angular-testing](https://gitlab.hornetsecurity.com/pdc/frontend-research/angular-testing/blob/master/README.md#e2e-tests) (Project)
+* [test/unittest_e2e](https://gitlab.hornetsecurity.com/pdc/ngCp/commits/test/unittest_e2e) (Branch)
+* [angular-adv-table/tree/feature/e2e](https://gitlab.hornetsecurity.com/pdc/hse-component/angular-adv-table/tree/feature/e2e) (Branch)
 
 ### jasmine
 
+* [Mock custom service in angular2 during unit test](https://stackoverflow.com/questions/40319045/mock-custom-service-in-angular2-during-unit-test) (stackoverflow)
+* [Testing Components in Angular 2 with Jasmine](https://semaphoreci.com/community/tutorials/testing-components-in-angular-2-with-jasmine) (Medium)
+* [Mocking Dependencies in Angular by Jon Caris](https://www.ng-conf.org/2019/mocking-dependencies-angular/) (Blog)
+* [Mock custom service in angular2 during unit test](https://stackoverflow.com/questions/40319045/mock-custom-service-in-angular2-during-unit-test) (stackoverflow)
 
-https://stackoverflow.com/questions/40319045/mock-custom-service-in-angular2-during-unit-test
-https://semaphoreci.com/community/tutorials/testing-components-in-angular-2-with-jasmine
-
-https://www.ng-conf.org/2019/mocking-dependencies-angular/
-https://stackoverflow.com/questions/40319045/mock-custom-service-in-angular2-during-unit-test
-
-
-https://wr.informatik.uni-hamburg.de/_media/teaching/wintersemester_2010_2011/siw-1011-ehmke-tests-ausarbeitung.pdf
-
-http://pi.informatik.uni-siegen.de/stt/23_4/01_Fachgruppenberichte/TAV/P7RuppQueinsTAV20.pdf
+### Testing
+* [Softwaretests](https://wr.informatik.uni-hamburg.de/_media/teaching/wintersemester_2010_2011/siw-1011-ehmke-tests-ausarbeitung.pdf) (PDF)
+* [Testen mit Use-Cases](http://pi.informatik.uni-siegen.de/stt/23_4/01_Fachgruppenberichte/TAV/P7RuppQueinsTAV20.pdf) (PDF)
 
 
 <a name="fixing-test-errors-mocking"></a>
